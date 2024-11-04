@@ -1,0 +1,11 @@
+{
+    "nushell-bin": {
+        "distros": [
+            "ubuntu-latest"
+        ],
+        "architectures": [
+            "amd64",
+            "arm64"
+        ]
+    }
+}

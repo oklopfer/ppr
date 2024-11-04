@@ -1,0 +1,35 @@
+name: Build Matrix for nushell-bin
+'on':
+- push
+- pull_request
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+        - distro: ubuntu-latest
+          architecture: amd64
+        - distro: ubuntu-latest
+          architecture: arm64
+    steps:
+    - name: Init
+      uses: actions/checkout@v4
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v3
+    - name: Install deps
+      run: sudo apt-get update && sudo apt-get install -y jq rclone
+    - name: Package
+      run: |
+        mkdir -p out && cd out
+        m_name="nushell-bin"
+        m_dist="${{ matrix.distro }}"
+        m_arch="${{ matrix.architecture }}"
+        ../scripts/packer.sh "${m_name}" "${m_dist}" "${m_arch}"
+        debfile=(*.deb)
+        echo "DEBNAME=${debfile}" >> $GITHUB_ENV
+    - name: Upload .deb files
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.DEBNAME }}
+        path: out/${{ env.DEBNAME }}
