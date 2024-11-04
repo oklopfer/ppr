@@ -104,7 +104,7 @@ def gen_workflows():
                             "name": "Upload .deb files",
                             "uses": "actions/upload-artifact@v4",
                             "with": {
-                                "name": "${{ matrix.distro }}/${{ env.DEBNAME }}",
+                                "name": "${{ env.DEBNAME }}@${{ matrix.distro }}",
                                 "path": "out/${{ env.DEBNAME }}"
                             }
                         }
