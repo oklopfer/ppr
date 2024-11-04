@@ -81,6 +81,9 @@ packer() {
     echo "Valid entries: debian-stable, debian-testing, debian-unstable, ubuntu-latest, ubuntu-rolling, ubuntu-devel"
     exit 1
   fi
+  if [[ ${arch} != "any" ]]; then
+    archarr=("${arch}")
+  fi
   for a in "${archarr[@]}"; do
     if [[ ${a} == "all" ]]; then
       target=":latest"
