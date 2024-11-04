@@ -39,15 +39,15 @@ get_tag() {
 }
 
 contains() {
-    local check
+    local check ret=1
     local -n arra="${1:?No array passed to array.contains}"
     local input="${2:?No input given to array.contains}"
     for check in "${arra[@]}"; do
         if [[ ${check} == "${input}" ]]; then
-            return 0
+            ret=0
         fi
     done
-    return 1
+    return "${ret}"
 }
 
 packer() {
@@ -57,11 +57,14 @@ packer() {
   mapfile -t archopts < <(curl -fsSL https://pacstall.dev/api/packages/${1} | jq -r '.architectures[]')
   if contains archopts "arm64" || contains archopts "aarch64"; then
     archarr+=("arm64")
-  elif contains archopts "amd64" || contains archopts "x86_64"; then
+  fi
+  if contains archopts "amd64" || contains archopts "x86_64"; then
     archarr+=("amd64")
-  elif contains archopts "all"; then
+  fi
+  if contains archopts "all"; then
     archarr=("all")
-  elif contains archopts "any"; then
+  fi
+  if contains archopts "any"; then
     archarr=("amd64" "arm64")
   fi
   if [[ ${arch} != @(aarch64|arm64|x86_64|amd64|all|any) ]]; then
