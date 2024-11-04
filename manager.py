@@ -66,7 +66,7 @@ def gen_workflows():
 
         workflow_template = {
             "name": f"Build Matrix for {package_name}",
-            "on": ["push", "pull_request"],
+            "on": ["workflow_dispatch"],
             "jobs": {
                 "build": {
                     "runs-on": "ubuntu-latest",

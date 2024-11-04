@@ -1,7 +1,6 @@
 name: Build Matrix for nushell-bin
 'on':
-- push
-- pull_request
+- workflow_dispatch
 jobs:
   build:
     runs-on: ubuntu-latest
