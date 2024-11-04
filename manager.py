@@ -96,7 +96,7 @@ def gen_workflows():
                                 f"m_dist=\"${{{{ matrix.distro }}}}\"\n"
                                 f"m_arch=\"${{{{ matrix.architecture }}}}\"\n"
                                 f"../scripts/packer.sh \"${{m_name}}\" \"${{m_dist}}\" \"${{m_arch}}\"\n"
-                                "debfile=(*.deb)\n"
+                                "debfile=(*${m_arch}.deb)\n"
                                 "echo \"DEBNAME=${debfile}\" >> $GITHUB_ENV"
                             )
                         },
