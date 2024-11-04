@@ -65,7 +65,7 @@ def gen_workflows():
         ]
 
         workflow_template = {
-            "name": f"Build Matrix for {package_name}",
+            "name": f"{package_name}",
             "on": ["workflow_dispatch"],
             "jobs": {
                 "build": {

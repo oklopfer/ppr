@@ -1,4 +1,4 @@
-name: Build Matrix for nushell-bin
+name: nushell-bin
 'on':
 - workflow_dispatch
 jobs:
