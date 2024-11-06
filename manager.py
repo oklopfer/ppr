@@ -89,6 +89,14 @@ def gen_workflows():
                             "run": "sudo apt-get update && sudo apt-get install -y jq rclone"
                         },
                         {
+                            "name": "Set up SSH key",
+                            "run": LiteralString(
+                                f"echo \"${{{{ secrets.SSH_KEY }}}}\" > ~/.ssh/id_ed25519\n"
+                                f"chmod 600 ~/.ssh/id_ed25519\n"
+                                f"ssh-keyscan -H \"${{{{ secrets.SSH_IP }}}}\" >> ~/.ssh/known_hosts"
+                            )
+                        },
+                        {
                             "name": "Package",
                             "run": LiteralString(
                                 f"mkdir -p out && cd out\n"
@@ -107,6 +115,14 @@ def gen_workflows():
                                 "name": "${{ env.DEBNAME }}@${{ matrix.distro }}",
                                 "path": "out/${{ env.DEBNAME }}"
                             }
+                        },
+                        {
+                            "name": "Transfer files to the server",
+                            "run": LiteralString(
+                                f"LOCATION=\"${{{{ secrets.SSH_USER }}}}@${{{{ secrets.SSH_IP }}}}\"\n"
+                                f"DISTROPATH=\"/home/${{{{ secrets.SSH_USER }}}}/get/${{{{ matrix.architecture }}}}\"\n"
+                                f"scp -i ~/.ssh/id_ed25519 ./out/\"${{{{ env.DEBNAME }}}}\" \"${{LOCATION}}:${{DISTROPATH}}\""
+                            )
                         }
                     ]
                 }

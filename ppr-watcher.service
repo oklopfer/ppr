@@ -1,0 +1,12 @@
+[Unit]
+Description=PPR Upload Watcher
+After=network.target
+
+[Service]
+User=${USER}
+ExecStart=/home/${USER}/watcher.sh
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
