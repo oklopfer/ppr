@@ -85,10 +85,6 @@ def gen_workflows():
                             "uses": "docker/setup-qemu-action@v3"
                         },
                         {
-                            "name": "Install deps",
-                            "run": "sudo apt-get update && sudo apt-get install -y jq rclone"
-                        },
-                        {
                             "name": "Set up SSH key",
                             "run": LiteralString(
                                 f"mkdir -p ~/.ssh\n"
