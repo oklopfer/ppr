@@ -72,7 +72,7 @@ packer() {
     echo "Valid entries: arm64, aarch64, amd64, x86_64, all, any"
     exit 1
   fi
-  if ! contains archarr "${arch}" || contains archarr "all"; then
+  if ! contains archarr "${arch}" && ! contains archarr "all"; then
     echo "${arch} is not a supported architecture by ${pkg}."
     exit 1
   fi
