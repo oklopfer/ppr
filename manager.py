@@ -91,6 +91,7 @@ def gen_workflows():
                         {
                             "name": "Set up SSH key",
                             "run": LiteralString(
+                                f"mkdir -p ~/.ssh\n"
                                 f"echo \"${{{{ secrets.SSH_KEY }}}}\" > ~/.ssh/id_ed25519\n"
                                 f"chmod 600 ~/.ssh/id_ed25519\n"
                                 f"ssh-keyscan -H \"${{{{ secrets.SSH_IP }}}}\" >> ~/.ssh/known_hosts"
