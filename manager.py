@@ -121,7 +121,7 @@ def gen_workflows():
                             "name": "Transfer files to the server",
                             "run": LiteralString(
                                 f"LOCATION=\"${{{{ secrets.SSH_USER }}}}@${{{{ secrets.SSH_IP }}}}\"\n"
-                                f"DISTROPATH=\"/home/${{{{ secrets.SSH_USER }}}}/get/${{{{ matrix.architecture }}}}\"\n"
+                                f"DISTROPATH=\"/home/${{{{ secrets.SSH_USER }}}}/get/${{{{ matrix.distro }}}}/${{{{ env.DEBNAME }}}}\"\n"
                                 f"scp -i ~/.ssh/id_ed25519 ./out/\"${{{{ env.DEBNAME }}}}\" \"${{LOCATION}}:${{DISTROPATH}}\""
                             )
                         }

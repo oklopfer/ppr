@@ -39,5 +39,5 @@ jobs:
     - name: Transfer files to the server
       run: |
         LOCATION="${{ secrets.SSH_USER }}@${{ secrets.SSH_IP }}"
-        DISTROPATH="/home/${{ secrets.SSH_USER }}/get/${{ matrix.architecture }}"
+        DISTROPATH="/home/${{ secrets.SSH_USER }}/get/${{ matrix.distro }}/${{ env.DEBNAME }}"
         scp -i ~/.ssh/id_ed25519 ./out/"${{ env.DEBNAME }}" "${LOCATION}:${DISTROPATH}"
