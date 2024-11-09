@@ -45,4 +45,3 @@ jobs:
         curl -X POST -F file=@out/${{ env.DEBNAME }} "http://localhost:${LOCAL_PORT}/api/files/${{ matrix.distro }}"
         curl -s -X POST -H 'Content-Type: application/json' \
           "http://localhost:${LOCAL_PORT}/api/repos/ppr-${{ matrix.distro }}/file/${{ matrix.distro }}?forceReplace=1"
-        pkill -f "ssh -fN -L ${LOCAL_PORT}:localhost:${REMOTE_PORT}"
