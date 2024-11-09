@@ -122,8 +122,7 @@ def gen_workflows():
                                 f"ssh -i ~/.ssh/id_ed25519 -fN -L ${{LOCAL_PORT}}:localhost:${{REMOTE_PORT}} \"${{LOCATION}}\"\n"
                                 f"curl -X POST -F file=@out/${{{{ env.DEBNAME }}}} \"http://localhost:${{LOCAL_PORT}}/api/files/${{{{ matrix.distro }}}}\"\n"
                                 f"curl -s -X POST -H 'Content-Type: application/json' \\\n"
-                                f"  --data '{{\"forceReplace\": 1}}' \\\n"
-                                f"  \"http://localhost:${{LOCAL_PORT}}/api/repos/ppr-${{{{ matrix.distro }}}}/file/${{{{ matrix.distro }}}}\"\n"
+                                f"  \"http://localhost:${{LOCAL_PORT}}/api/repos/ppr-${{{{ matrix.distro }}}}/file/${{{{ matrix.distro }}}}?forceReplace=1\"\n"
                                 f"pkill -f \"ssh -fN -L ${{LOCAL_PORT}}:localhost:${{REMOTE_PORT}}\""
                             )
                         }
