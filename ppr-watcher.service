@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 User=${USER}
-ExecStart=/home/${USER}/watcher.sh
+ExecStart=/home/${USER}/watcher.sh ${PASSPHRASE}
 Restart=on-failure
 RestartSec=10
 

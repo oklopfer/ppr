@@ -114,11 +114,17 @@ def gen_workflows():
                             }
                         },
                         {
-                            "name": "Transfer files to the server",
+                            "name": "Upload to server",
                             "run": LiteralString(
                                 f"LOCATION=\"${{{{ secrets.SSH_USER }}}}@${{{{ secrets.SSH_IP }}}}\"\n"
-                                f"DISTROPATH=\"/home/${{{{ secrets.SSH_USER }}}}/get/${{{{ matrix.distro }}}}/${{{{ env.DEBNAME }}}}\"\n"
-                                f"scp -i ~/.ssh/id_ed25519 ./out/\"${{{{ env.DEBNAME }}}}\" \"${{LOCATION}}:${{DISTROPATH}}\""
+                                f"LOCAL_PORT=8080\n"
+                                f"REMOTE_PORT=8088\n"
+                                f"ssh -i ~/.ssh/id_ed25519 -fN -L ${{LOCAL_PORT}}:localhost:${{REMOTE_PORT}} \"${{LOCATION}}\"\n"
+                                f"curl -X POST -F file=@out/${{{{ env.DEBNAME }}}} \"http://localhost:${{LOCAL_PORT}}/api/files/${{{{ matrix.distro }}}}\"\n"
+                                f"curl -s -X POST -H 'Content-Type: application/json' \\\n"
+                                f"  --data '{{\"forceReplace\": 1}}' \\\n"
+                                f"  \"http://localhost:${{LOCAL_PORT}}/api/repos/ppr-${{{{ matrix.distro }}}}/file/${{{{ matrix.distro }}}}\"\n"
+                                f"pkill -f \"ssh -fN -L ${{LOCAL_PORT}}:localhost:${{REMOTE_PORT}}\""
                             )
                         }
                     ]
