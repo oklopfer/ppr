@@ -1,14 +1,20 @@
 #!/usr/bin/env bash
 
-PASSPHRASE="${1:?PASSPHRASE is required}"
+LOCAL_PORT=8088
 distrolist=("ubuntu-latest" "ubuntu-develop" "ubuntu-rolling" "debian-stable" "debian-testing" "debian-unstable")
 archlist=("amd64" "arm64" "source")
-mapfile -t pprlist < <(printf 'ppr-%s\n' "${distrolist[@]}")
-distrostring="$(IFS=,; echo "${distrolist[*]}")"
-archstring="$(IFS=,; echo "${archlist[*]}")"
+mapfile -t pprlist < <(for i in "${distrolist[@]}"; do echo "{\"Component\": \"${i}\", \"Name\": \"ppr-${i}\"},"; done)
+pprstring="${pprlist[@]}"
+archstring="$(printf '"%s", ' "${archlist[@]}")"
 
+# create
 for i in "${distrolist[@]}"; do
-  aptly repo create -distribution=pacstall -component="${i}" "ppr-${i}"
+  curl -X POST -H 'Content-Type: application/json' \
+    --data "{\"Name\": \"ppr-${i}\", \"DefaultDistribution\": \"pacstall\", \"DefaultComponent\": \"${i}\"}" \
+    http://localhost:"${LOCAL_PORT}"/api/repos
 done
 
-aptly publish repo -component="${distrostring}" -architectures="${archstring}" -passphrase="${PASSPHRASE}" "${pprlist[@]}"
+# publish
+curl -X POST -H 'Content-Type: application/json' \
+  --data "{\"SourceKind\": \"local\", \"Sources\": [${pprstring%,}], \"Architectures\": [${archstring%, }], \"Distribution\": \"pacstall\", \"Signing\": {\"Skip\": true}, \"MultiDist\": true}" \
+  http://localhost:"${LOCAL_PORT}"/api/publish/pacstall
