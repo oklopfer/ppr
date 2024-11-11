@@ -123,7 +123,7 @@ def gen_workflows():
                                 f"curl -X POST -F file=@out/${{{{ env.DEBNAME }}}} \"http://localhost:${{LOCAL_PORT}}/api/files/${{{{ matrix.distro }}}}\"\n"
                                 f"curl -s -X POST -H 'Content-Type: application/json' \\\n"
                                 f"  \"http://localhost:${{LOCAL_PORT}}/api/repos/ppr-${{{{ matrix.distro }}}}/file/${{{{ matrix.distro }}}}?forceReplace=1\"\n"
-                                f"curl -X PUT -H 'Content-Type: application/json' --data '{{\"Signing\": {{\"Skip\": true}}, \"MultiDist\": true}}' \"http://localhost:${{LOCAL_PORT}}/api/publish/pacstall/pacstall\""
+                                f"curl -X PUT -H 'Content-Type: application/json' --data '{{\"Signing\": {{\"Skip\": true}}, \"MultiDist\": true, \"ForceOverwrite\": true}}' \"http://localhost:${{LOCAL_PORT}}/api/publish/pacstall/pacstall\"\n"
                             )
                         }
                     ]
