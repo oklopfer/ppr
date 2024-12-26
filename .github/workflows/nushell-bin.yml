@@ -7,9 +7,9 @@ jobs:
     strategy:
       matrix:
         include:
-        - distro: ubuntu-latest
+        - distro: main
           architecture: amd64
-        - distro: ubuntu-latest
+        - distro: main
           architecture: arm64
     steps:
     - name: Init

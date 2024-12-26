@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os
 import sys
 import yaml
@@ -181,7 +183,7 @@ def add_or_update_package(name, distros, architectures):
 
 def main():
     valid_distros = [
-        "ubuntu-latest", "ubuntu-rolling", "ubuntu-devel",
+        "main", "ubuntu-latest", "ubuntu-rolling", "ubuntu-devel",
         "debian-stable", "debian-testing", "debian-unstable"
     ]
     
